@@ -30,8 +30,11 @@ pub fn run() {
                         ""
                     };
                     
-                    let tor_path = exe_dir.join(format!("tor{}", suffix));
-                    let privoxy_path = exe_dir.join(format!("privoxy{}", suffix));
+                    let tor_with_suffix = exe_dir.join(format!("tor{}", suffix));
+                    let tor_path = if tor_with_suffix.exists() { tor_with_suffix } else { exe_dir.join("tor") };
+                    
+                    let privoxy_with_suffix = exe_dir.join(format!("privoxy{}", suffix));
+                    let privoxy_path = if privoxy_with_suffix.exists() { privoxy_with_suffix } else { exe_dir.join("privoxy") };
                     
                     let sidecar_command = app_handle.shell().sidecar("python-backend").unwrap()
                         .env("TOR_PATH", tor_path.to_str().unwrap())
