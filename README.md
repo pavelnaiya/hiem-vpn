@@ -1,7 +1,9 @@
 # Hiem VPN 
 
 <p align="center">
-  <img src="assets/dashboard.png" alt="Hiem VPN Dashboard" width="600"/>
+  <img src="assets/app.png" alt="Hiem VPN Desktop App" width="45%">
+  &nbsp; &nbsp;
+  <img src="assets/dashboard.png" alt="Hiem VPN Dashboard" width="45%">
 </p>
 
 A beautiful, native desktop VPN application built for macOS. Hiem VPN uses the Tor network and Privoxy under the hood to provide secure, encrypted, and globally-routed proxy connections directly integrated with macOS system networking.
