@@ -1,0 +1,19 @@
+# Python
+venv/
+__pycache__/
+*.py[cod]
+.env
+build/
+torproxy
+webapp/build/
+
+# Tauri / Rust / Node
+node_modules/
+tauri-app/src-tauri/target/
+tauri-app/src-tauri/bin/
+dist/
+
+# OS
+.DS_Store
+.AppleDouble
+.LSOverride

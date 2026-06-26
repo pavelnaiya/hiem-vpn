@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hiem VPN Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=34">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div class="background-animation"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header data-tauri-drag-region
+            style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <div class="header-content" data-tauri-drag-region>
+                <a href="#" id="homeLink"
+                    style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: inherit;">
+                    <img id="appLogo" src="assets/logo.svg" alt="Hiem Logo" style="height: 48px;">
+                    <h1 style="margin: 0; font-size: 1.5rem; font-family: 'Ubuntu', sans-serif;">Hiem VPN</h1>
+                </a>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem;">
+                <button id="themeToggleBtn" class="icon-btn" title="Toggle Theme">
+                    <i data-lucide="sun"></i>
+                </button>
+                <button id="navSettingsBtn" class="icon-btn" title="Settings">
+                    <i data-lucide="settings"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Home View -->
+        <main id="viewHome">
+            <div class="connect-container"
+                style="display: flex; flex-direction: column; align-items: center; gap: 1.5rem; padding: 2rem 0;">
+                <button id="mainConnectBtn" class="connect-btn">
+                    <i data-lucide="power" style="width: 48px; height: 48px; margin-bottom: 0.5rem;"></i>
+                    <span class="btn-text">Connect</span>
+                </button>
+
+                <div id="proxyStatus" class="status-badge error">
+                    <div class="indicator"></div>
+                    <span class="text">Disconnected</span>
+                </div>
+            </div>
+
+            <div id="activeConnectionPanel" class="card"
+                style="display: none; transform: translateY(10px); opacity: 0; transition: all 0.3s ease;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2><i data-lucide="activity"></i> Connection</h2>
+                    <div class="location">
+                        <img id="flagIcon" src="" alt="flag" style="display: none; width: 24px; border-radius: 2px;">
+                        <span id="currentLocation">Unknown</span>
+                    </div>
+                </div>
+                <div class="ip-display" style="text-align: center;">
+                    <span id="currentIp" class="ip-address">---</span>
+                </div>
+                <button id="rotateBtn" class="btn secondary" style="width: 100%;">
+                    <i data-lucide="refresh-cw"></i> Force New IP
+                </button>
+            </div>
+
+            <section class="card"
+                style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; margin-top: 1rem;">
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="margin-bottom: 0.2rem; font-size: 1rem; color: var(--text-primary);">Location</h3>
+                </div>
+                <div class="custom-dropdown-container">
+                    <input type="hidden" id="homeExitNode" value="Any">
+                    <div class="custom-dropdown-trigger" id="customLocationDropdownTrigger">
+                        <div class="dropdown-trigger-content">
+                            <img id="dropdownTriggerFlag" src="https://flagcdn.com/24x18/un.png" alt="Randomized">
+                            <div class="dropdown-text">
+                                <div class="dropdown-title" id="dropdownTriggerTitle">Randomized (Auto)</div>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-down" class="dropdown-chevron"></i>
+                    </div>
+                    <div class="custom-dropdown-menu" id="customLocationDropdownMenu">
+                        <div class="dropdown-item" data-value="Any" data-name="Randomized (Auto)" data-flag="un">
+                            <img src="https://flagcdn.com/24x18/un.png" alt="Any"> Randomized (Auto)
+                        </div>
+                        <div class="dropdown-item" data-value="US" data-name="United States" data-flag="us">
+                            <img src="https://flagcdn.com/24x18/us.png" alt="US"> United States
+                        </div>
+                        <div class="dropdown-item" data-value="GB" data-name="United Kingdom" data-flag="gb">
+                            <img src="https://flagcdn.com/24x18/gb.png" alt="GB"> United Kingdom
+                        </div>
+                        <div class="dropdown-item" data-value="DE" data-name="Germany" data-flag="de">
+                            <img src="https://flagcdn.com/24x18/de.png" alt="DE"> Germany
+                        </div>
+                        <div class="dropdown-item" data-value="FR" data-name="France" data-flag="fr">
+                            <img src="https://flagcdn.com/24x18/fr.png" alt="FR"> France
+                        </div>
+                        <div class="dropdown-item" data-value="NL" data-name="Netherlands" data-flag="nl">
+                            <img src="https://flagcdn.com/24x18/nl.png" alt="NL"> Netherlands
+                        </div>
+                        <div class="dropdown-item" data-value="CH" data-name="Switzerland" data-flag="ch">
+                            <img src="https://flagcdn.com/24x18/ch.png" alt="CH"> Switzerland
+                        </div>
+                        <div class="dropdown-item" data-value="SE" data-name="Sweden" data-flag="se">
+                            <img src="https://flagcdn.com/24x18/se.png" alt="SE"> Sweden
+                        </div>
+                        <div class="dropdown-item" data-value="CA" data-name="Canada" data-flag="ca">
+                            <img src="https://flagcdn.com/24x18/ca.png" alt="CA"> Canada
+                        </div>
+                        <div class="dropdown-item" data-value="JP" data-name="Japan" data-flag="jp">
+                            <img src="https://flagcdn.com/24x18/jp.png" alt="JP"> Japan
+                        </div>
+                        <div class="dropdown-item" data-value="AU" data-name="Australia" data-flag="au">
+                            <img src="https://flagcdn.com/24x18/au.png" alt="AU"> Australia
+                        </div>
+                        <div class="dropdown-item" data-value="SG" data-name="Singapore" data-flag="sg">
+                            <img src="https://flagcdn.com/24x18/sg.png" alt="SG"> Singapore
+                        </div>
+                        <div class="dropdown-item" data-value="IN" data-name="India" data-flag="in">
+                            <img src="https://flagcdn.com/24x18/in.png" alt="IN"> India
+                        </div>
+                        <div class="dropdown-item" data-value="BR" data-name="Brazil" data-flag="br">
+                            <img src="https://flagcdn.com/24x18/br.png" alt="BR"> Brazil
+                        </div>
+                        <div class="dropdown-item" data-value="AT" data-name="Austria" data-flag="at">
+                            <img src="https://flagcdn.com/24x18/at.png" alt="AT"> Austria
+                        </div>
+                        <div class="dropdown-item" data-value="BE" data-name="Belgium" data-flag="be">
+                            <img src="https://flagcdn.com/24x18/be.png" alt="BE"> Belgium
+                        </div>
+                        <div class="dropdown-item" data-value="BG" data-name="Bulgaria" data-flag="bg">
+                            <img src="https://flagcdn.com/24x18/bg.png" alt="BG"> Bulgaria
+                        </div>
+                        <div class="dropdown-item" data-value="CZ" data-name="Czech Republic" data-flag="cz">
+                            <img src="https://flagcdn.com/24x18/cz.png" alt="CZ"> Czech Republic
+                        </div>
+                        <div class="dropdown-item" data-value="DK" data-name="Denmark" data-flag="dk">
+                            <img src="https://flagcdn.com/24x18/dk.png" alt="DK"> Denmark
+                        </div>
+                        <div class="dropdown-item" data-value="ES" data-name="Spain" data-flag="es">
+                            <img src="https://flagcdn.com/24x18/es.png" alt="ES"> Spain
+                        </div>
+                        <div class="dropdown-item" data-value="FI" data-name="Finland" data-flag="fi">
+                            <img src="https://flagcdn.com/24x18/fi.png" alt="FI"> Finland
+                        </div>
+                        <div class="dropdown-item" data-value="IE" data-name="Ireland" data-flag="ie">
+                            <img src="https://flagcdn.com/24x18/ie.png" alt="IE"> Ireland
+                        </div>
+                        <div class="dropdown-item" data-value="IT" data-name="Italy" data-flag="it">
+                            <img src="https://flagcdn.com/24x18/it.png" alt="IT"> Italy
+                        </div>
+                        <div class="dropdown-item" data-value="NO" data-name="Norway" data-flag="no">
+                            <img src="https://flagcdn.com/24x18/no.png" alt="NO"> Norway
+                        </div>
+                        <div class="dropdown-item" data-value="PL" data-name="Poland" data-flag="pl">
+                            <img src="https://flagcdn.com/24x18/pl.png" alt="PL"> Poland
+                        </div>
+                        <div class="dropdown-item" data-value="PT" data-name="Portugal" data-flag="pt">
+                            <img src="https://flagcdn.com/24x18/pt.png" alt="PT"> Portugal
+                        </div>
+                        <div class="dropdown-item" data-value="RO" data-name="Romania" data-flag="ro">
+                            <img src="https://flagcdn.com/24x18/ro.png" alt="RO"> Romania
+                        </div>
+                        <div class="dropdown-item" data-value="RU" data-name="Russia" data-flag="ru">
+                            <img src="https://flagcdn.com/24x18/ru.png" alt="RU"> Russia
+                        </div>
+                        <div class="dropdown-item" data-value="UA" data-name="Ukraine" data-flag="ua">
+                            <img src="https://flagcdn.com/24x18/ua.png" alt="UA"> Ukraine
+                        </div>
+                        <div class="dropdown-item" data-value="HK" data-name="Hong Kong" data-flag="hk">
+                            <img src="https://flagcdn.com/24x18/hk.png" alt="HK"> Hong Kong
+                        </div>
+                        <div class="dropdown-item" data-value="ZA" data-name="South Africa" data-flag="za">
+                            <img src="https://flagcdn.com/24x18/za.png" alt="ZA"> South Africa
+                        </div>
+                        <div class="dropdown-item" data-value="KR" data-name="South Korea" data-flag="kr">
+                            <img src="https://flagcdn.com/24x18/kr.png" alt="KR"> South Korea
+                        </div>
+                        <div class="dropdown-item" data-value="NZ" data-name="New Zealand" data-flag="nz">
+                            <img src="https://flagcdn.com/24x18/nz.png" alt="NZ"> New Zealand
+                        </div>
+                        <div class="dropdown-item" data-value="AR" data-name="Argentina" data-flag="ar">
+                            <img src="https://flagcdn.com/24x18/ar.png" alt="AR"> Argentina
+                        </div>
+                        <div class="dropdown-item" data-value="MX" data-name="Mexico" data-flag="mx">
+                            <img src="https://flagcdn.com/24x18/mx.png" alt="MX"> Mexico
+                        </div>
+                        <div class="dropdown-item" data-value="CL" data-name="Chile" data-flag="cl">
+                            <img src="https://flagcdn.com/24x18/cl.png" alt="CL"> Chile
+                        </div>
+                        <div class="dropdown-item" data-value="CO" data-name="Colombia" data-flag="co">
+                            <img src="https://flagcdn.com/24x18/co.png" alt="CO"> Colombia
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card"
+                style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; margin-top: 1rem;">
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="margin-bottom: 0.2rem; font-size: 1rem; color: var(--text-primary);">Auto-Kill Switch
+                        <span style="font-size: 0.7rem; color: var(--primary);">(Coming Soon)</span>
+                    </h3>
+                    <span style="color: var(--text-secondary); font-size: 0.8rem;">Pause network if VPN drops</span>
+                </div>
+                <label class="toggle-switch" style="opacity: 0.5; cursor: not-allowed;">
+                    <input type="checkbox" id="homeKillSwitch" disabled>
+                    <span class="slider" style="cursor: not-allowed;"></span>
+                </label>
+            </section>
+        </main>
+
+        <!-- Settings View -->
+        <main id="viewSettings" style="display: none; height: 500px;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem;">
+                <h2 style="font-size: 1.2rem; margin: 0;">Settings</h2>
+            </div>
+
+            <div class="settings-layout">
+
+                <!-- Sidebar -->
+                <nav class="settings-sidebar">
+                    <button class="nav-item active" data-tab="tabGeneral"><i data-lucide="sliders"></i> General</button>
+                    <button class="nav-item" data-tab="tabRouting"><i data-lucide="git-merge"></i> Smart
+                        Routing</button>
+                    <button class="nav-item" data-tab="tabSecurity"><i data-lucide="shield"></i> Security</button>
+                </nav>
+
+                <!-- Content -->
+                <div class="settings-content">
+
+                    <!-- General Tab -->
+                    <div id="tabGeneral" class="tab-pane active">
+                        <div class="settings-row">
+                            <div>
+                                <label>Launch on Startup</label>
+                                <p class="help-text">Start Hiem automatically when you log in.</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="settingStartLaunch">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="settings-row">
+                            <div>
+                                <label>Auto-Connect on Launch</label>
+                                <p class="help-text">Connect to the VPN automatically.</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="settingAutoConnect">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="settings-row" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                            <div style="display: flex; justify-content: space-between; width: 100%;">
+                                <label>IP Rotation Frequency</label>
+                                <span id="frequencyValue" style="color: var(--primary); font-weight: 500;">Never</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 8px;">
+                                <span
+                                    style="font-size: 0.8rem; color: var(--text-secondary); flex-shrink: 0;">Never</span>
+                                <input type="range" id="rotationFrequency" min="0" max="1800" step="30" value="0"
+                                    style="flex: 1; min-width: 0; margin: 0;">
+                                <span
+                                    style="font-size: 0.8rem; color: var(--text-secondary); flex-shrink: 0;">30m</span>
+                            </div>
+                            <p class="help-text" style="margin-top: 8px;">Automatically request a new identity on this
+                                interval.</p>
+                        </div>
+                        <div class="settings-row">
+                            <div>
+                                <label>Randomize Interval (Jitter)</label>
+                                <p class="help-text">Varies rotation timing by ±30% to evade fingerprinting.</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="settingRotationJitter">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Routing Tab -->
+                    <div id="tabRouting" class="tab-pane" style="display: none;">
+
+                        <!-- Global Mode -->
+                        <div class="routing-card" data-mode="all" id="routingCardAll">
+                            <div class="routing-card-header">
+                                <div>
+                                    <label>Global VPN</label>
+                                    <p>Route all traffic securely through the VPN.</p>
+                                </div>
+                                <div class="routing-radio"></div>
+                            </div>
+                        </div>
+
+                        <!-- Whitelist Mode -->
+                        <div class="routing-card" data-mode="whitelist" id="routingCardWhitelist">
+                            <div class="routing-card-header">
+                                <div>
+                                    <label>Split Tunneling</label>
+                                    <p>Only connect to the VPN for selected websites.</p>
+                                </div>
+                                <div class="routing-radio"></div>
+                            </div>
+                            <div class="routing-card-action" id="actionWhitelist">
+                                <span><span class="domain-count">0</span> websites selected</span>
+                                <i data-lucide="chevron-right"></i>
+                            </div>
+                            <div class="routing-card-body" style="display: none;">
+                                <textarea id="routingDomainsWhitelist" placeholder="e.g. netflix.com, hulu.com"
+                                    rows="3"></textarea>
+                                <small>Enter root domains separated by commas.</small>
+                            </div>
+                        </div>
+
+                        <!-- Blacklist Mode -->
+                        <div class="routing-card" data-mode="blacklist" id="routingCardBlacklist">
+                            <div class="routing-card-header">
+                                <div>
+                                    <label>Bypass VPN</label>
+                                    <p>Select websites that will connect to the internet without a VPN.</p>
+                                </div>
+                                <div class="routing-radio"></div>
+                            </div>
+                            <div class="routing-card-action" id="actionBlacklist">
+                                <span><span class="domain-count">0</span> websites selected</span>
+                                <i data-lucide="chevron-right"></i>
+                            </div>
+                            <div class="routing-card-body" style="display: none;">
+                                <textarea id="routingDomainsBlacklist" placeholder="e.g. google.com, local.dev"
+                                    rows="3"></textarea>
+                                <small>Enter root domains separated by commas.</small>
+                            </div>
+                        </div>
+
+                        <input type="hidden" id="routingMode" value="all">
+                    </div>
+
+                    <!-- Security Tab -->
+                    <div id="tabSecurity" class="tab-pane" style="display: none;">
+                        <div class="settings-row">
+                            <div>
+                                <label>Auto-Launch on Public WiFi</label>
+                                <p class="help-text">Automatically connect to VPN when joining unsecured networks.</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="settingAutoWifi">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="settings-row" style="margin-top: 1.5rem;">
+                            <div>
+                                <label>System Auto-Kill Switch <span
+                                        style="font-size: 0.7rem; color: var(--primary);">(Coming Soon)</span></label>
+                                <p class="help-text">Blocks all outgoing traffic if the VPN connection drops
+                                    unexpectedly.</p>
+                            </div>
+                            <label class="toggle-switch" style="opacity: 0.5; cursor: not-allowed;">
+                                <input type="checkbox" id="settingKillSwitch" disabled>
+                                <span class="slider" style="cursor: not-allowed;"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); align-items: center;">
+                <button id="resetSettingsBtn" class="btn ghost" style="margin-right: auto; gap: 4px;">
+                    <i data-lucide="rotate-ccw" style="width: 16px; height: 16px;"></i> Reset
+                </button>
+                <button id="cancelSettingsBtn" class="btn secondary">
+                    <i data-lucide="x"></i> Cancel
+                </button>
+                <button id="saveSettingsBtn" class="btn primary">
+                    <i data-lucide="save"></i> Save
+                </button>
+            </div>
+            <div id="settingsMsg" class="success-msg"></div>
+        </main>
+    </div>
+
+    <dialog id="resetConfirmDialog" class="custom-dialog">
+        <div class="dialog-content">
+            <div class="dialog-header">
+                <h3>Reset Settings</h3>
+            </div>
+            <div class="dialog-body">
+                <p>Are you sure you want to reset all settings to their defaults? This action cannot be undone.</p>
+            </div>
+            <div class="dialog-footer">
+                <button id="dialogCancelBtn" class="btn secondary">Cancel</button>
+                <button id="dialogConfirmBtn" class="btn primary"
+                    style="background: var(--error, #EF4444); border-color: var(--error, #EF4444);">Reset</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script src="app.js?v=36"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
