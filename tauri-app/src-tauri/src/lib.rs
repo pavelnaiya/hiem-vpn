@@ -21,7 +21,22 @@ pub fn run() {
                 let healthy_uptime = std::time::Duration::from_secs(120);
                 
                 loop {
-                    let sidecar_command = app_handle.shell().sidecar("python-backend").unwrap();
+                    let exe_dir = std::env::current_exe().unwrap().parent().unwrap().to_path_buf();
+                    let suffix = if cfg!(target_arch = "aarch64") {
+                        "-aarch64-apple-darwin"
+                    } else if cfg!(target_arch = "x86_64") {
+                        "-x86_64-apple-darwin"
+                    } else {
+                        ""
+                    };
+                    
+                    let tor_path = exe_dir.join(format!("tor{}", suffix));
+                    let privoxy_path = exe_dir.join(format!("privoxy{}", suffix));
+                    
+                    let sidecar_command = app_handle.shell().sidecar("python-backend").unwrap()
+                        .env("TOR_PATH", tor_path.to_str().unwrap())
+                        .env("PRIVOXY_PATH", privoxy_path.to_str().unwrap());
+                    
                     let (mut rx, _child) = sidecar_command.spawn().expect("Failed to spawn sidecar");
                     
                     let start_time = std::time::Instant::now();
