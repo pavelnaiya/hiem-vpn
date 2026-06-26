@@ -3,13 +3,16 @@
 This document outlines the strategic path for evolving Hiem VPN from a macOS-centric, Homebrew-dependent tool into a truly universal, zero-dependency standalone desktop application for macOS, Windows, and Linux.
 
 ## Phase 1: Zero-Dependency Architecture (Native Binaries)
-The current limitation is the reliance on system package managers (Homebrew) for the `tor` and `privoxy` engines. The goal is a true "download-and-click" experience.
+The current limitation is the reliance on system package managers (Homebrew) for the `tor` and `privoxy` engines on macOS. The goal is a true "download-and-click" experience for **all** operating systems, starting with macOS.
 
-1. **Bundle Engines as Tauri Sidecars**
-   - Download the official pre-compiled `.exe`, `.app`, and ELF binaries for Tor and Privoxy for all major architectures (x86_64, aarch64).
-   - Place them in `tauri-app/src-tauri/bin/` alongside the Python backend.
-   - Configure `tauri.conf.json` to bundle these engines native to the OS.
-2. **Dynamic Path Resolution**
+1. **Bundle Mac Engines natively**
+   - We must remove the requirement for Mac users to run `brew install tor privoxy`.
+   - Download the official pre-compiled macOS (Mach-O) binaries for Tor and Privoxy (for both Apple Silicon `aarch64` and Intel `x86_64`).
+   - Place them inside `tauri-app/src-tauri/bin/` with specific target suffixes (e.g., `tor-aarch64-apple-darwin`, `privoxy-aarch64-apple-darwin`).
+2. **Bundle Windows/Linux Engines as Tauri Sidecars**
+   - Do the same for Windows (`.exe`) and Linux (ELF) binaries.
+   - Configure `tauri.conf.json` to bundle these engine binaries native to the OS.
+3. **Dynamic Path Resolution**
    - Refactor `tor_controller.py` to stop hardcoding `/opt/homebrew/bin/tor`.
    - The Python backend must dynamically resolve the path to the bundled Tor/Privoxy binaries relative to its own execution path (`sys._MEIPASS` or Tauri's resource directory).
 
