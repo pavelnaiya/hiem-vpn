@@ -28,9 +28,7 @@
       "bin/tor",
       "bin/privoxy"
     ],
-    "resources": [
-      "bin/dylibs/*"
-    ],
+    "resources": [],
     "targets": "all",
     "icon": [
       "icons/32x32.png",
@@ -38,6 +36,16 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "macOS": {
+      "frameworks": [
+        "bin/dylibs/libpcre2-8.0.dylib",
+        "bin/dylibs/libssl.3.dylib",
+        "bin/dylibs/libscrypt.0.dylib",
+        "bin/dylibs/libcrypto.3.dylib",
+        "bin/dylibs/libevent-2.1.7.dylib",
+        "bin/dylibs/libpcre2-posix.3.dylib"
+      ]
+    }
   }
 }

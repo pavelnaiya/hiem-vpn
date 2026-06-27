@@ -73,6 +73,21 @@ class MacOSNetworkManager:
     def preflight_cleanup():
         """Revert proxy if a previous SIGKILL (kill -9) crash bypassed atexit handlers."""
         log.info("Running preflight network cleanup...")
+        
+        # Free up used ports from orphaned processes
+        try:
+            for port in [9050, 9051, 8118]:
+                try:
+                    out = subprocess.check_output(["lsof", "-t", f"-i:{port}"]).decode().strip()
+                    for pid in out.splitlines():
+                        if pid.strip():
+                            subprocess.run(["kill", "-9", pid.strip()])
+                            log.warning(f"Killed orphaned process {pid} on port {port}")
+                except subprocess.CalledProcessError:
+                    pass
+        except Exception as e:
+            log.error(f"Error freeing ports: {e}")
+
         for iface in MacOSNetworkManager.get_active_interfaces():
             try:
                 out = subprocess.check_output(["networksetup", "-getwebproxy", iface]).decode()
